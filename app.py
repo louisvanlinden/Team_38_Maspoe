@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from config import Config
 from models import db, User, Artists, FestivalEdition, Poll, Polloption, VotesFor, SuggestionFeedback
+from flask_migrate import Migrate
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     db.init_app(app)
 
+    migrate = Migrate(app, db)  
     # 1) Lokaal: maak app.db als hij nog niet bestaat
     #    In Supabase (Postgres) bestaan de tabellen al; create_all() doet dan niets extra.
     with app.app_context():
@@ -25,7 +27,7 @@ def create_app():
 
     # 3) Home: toon edities met hun polls
     @app.route("/")
-    def editions():
+    def home():
         eds = FestivalEdition.query.order_by(FestivalEdition.Start_date.desc().nullslast()).all()
         return render_template("editions.html", editions=eds)
 
