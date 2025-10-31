@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="h4">Kies een editie</h2>
+{% if editions %}
+<ul class="list-group">
+    {% for e in editions %}
+    <li class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center">
+            <div><strong>{{ e.Name }}</strong>{% if e.Location %} – {{ e.Location }}{% endif %}</div>
+            <div>
+                {% for p in e.polls %}
+                <a class="btn btn-sm btn-primary" href="{{ url_for('poll_detail', poll_id=p.id) }}">{{ p.Question }}</a>
+                {% else %}
+                <span class="text-muted">(geen poll)</span>
+                {% endfor %}
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Nog geen edities.</p>
+{% endif %}
+{% endblock %}

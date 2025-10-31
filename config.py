@@ -1,16 +1,10 @@
 import os
-from dotenv import load_dotenv
-load_dotenv()  # leest .env
 
 class Config:
+    # 1) DATABASE_URL komt uit omgeving (.env)
+    # 2) Valt terug op SQLite (app.db) als DATABASE_URL leeg is
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///app.db")
+    # Uitschakelen van een oude, dure feature
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
-
-    # kleine pool zodat cloud-DB’s stabiel blijven
-    SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_pre_ping": True,
-        "pool_recycle": 1800,
-        "pool_size": 5,
-        "max_overflow": 5,
-    }
+    # Voor cookies/flash messages; zet later iets sterkers in .env
+    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
