@@ -27,7 +27,7 @@ def create_app():
 
     # 3) Home: toon edities met hun polls
     @app.route("/")
-    def home():
+    def editions():
         eds = FestivalEdition.query.order_by(FestivalEdition.Start_date.desc().nullslast()).all()
         return render_template("editions.html", editions=eds)
 
